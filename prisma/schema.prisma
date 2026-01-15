@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+enum ServiceStatus {
+  PENDENTE
+  CONFIRMADO
+  CANCELADO
+  ENCERRADO
+}
+
+enum ServiceType {
+  MANICURE
+  PEDICURE
+  COMPLETO
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  role     Role   @default(ADMIN)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+// Tabela de Clientes que são atendidos
+model Client {
+  id    String @id @default(uuid())
+  name  String
+  phone String 
+
+  // Um cliente pode ter vários agendamentos (Relacionamento 1 para N)
+  schedules Schedule[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("clients")
+}
+
+// Tabela de Agendamentos
+model Schedule {
+  id     String        @id @default(uuid())
+  date   DateTime
+  
+  // Status e Tipo de Serviço
+  status ServiceStatus @default(PENDENTE)
+  service ServiceType
+
+  // Relacionamento: Todo agendamento precisa de um cliente
+  clientId String
+  client Client @relation(fields: [clientId], references: [id])
+
+  // Observações opcionais (caso a cliente peça algo específico)
+  notes String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("schedules")
+}
