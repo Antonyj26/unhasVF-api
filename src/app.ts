@@ -6,7 +6,7 @@ import cors from "cors";
 const app = express();
 app.use(
   cors({
-    origin: "https://seu-front.vercel.app",
+    origin: "https://unhas-vf.vercel.app",
   })
 );
 app.use(express.json());
