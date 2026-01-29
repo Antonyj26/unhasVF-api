@@ -7,6 +7,6 @@ export class SessionController {
 
     const session = await SessionService.create({ email, password });
 
-    return res.status(201).json(session);
+    return res.status(200).json(session);
   }
 }
