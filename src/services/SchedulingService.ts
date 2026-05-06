@@ -81,7 +81,7 @@ export class SchedulingService {
         notes: true,
       },
       orderBy: {
-        date: "asc",
+        createdAt: "desc",
       },
     });
 
@@ -103,7 +103,7 @@ export class SchedulingService {
     if (fetchScheduling.status === "CANCELADO") {
       throw new AppError(
         "Não é possível alterar o status de um agendamento cancelado",
-        404
+        404,
       );
     }
 
