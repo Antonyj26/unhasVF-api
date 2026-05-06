@@ -7,7 +7,7 @@ const app = express();
 app.use(
   cors({
     origin: "https://unhas-vf.vercel.app",
-  })
+  }),
 );
 app.use(express.json());
 app.use(route);
